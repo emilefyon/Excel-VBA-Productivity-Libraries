@@ -1,4 +1,4 @@
-Attribute VB_Name = "Files"
+Attribute VB_Name = "File"
 '---------------------------------------------------------------------------------------------------------------------------------------------
 '
 '   File Library v0.1
@@ -57,9 +57,9 @@ Attribute VB_Name = "Files"
 '
 '---------------------------------------------------------------------------------------------------------------------------------------------
 
-Function writeFile(ByVal file As String, ByVal content As String) As String
+Function writeFile(ByVal File As String, ByVal content As String) As String
     
-   Open file For Output As #1
+   Open File For Output As #1
    Print #1, content
    Close #1
    
@@ -84,10 +84,10 @@ End Function
 '
 '---------------------------------------------------------------------------------------------------------------------------------------------
 
-Function readFile(ByVal file As String) As String
+Function readFile(ByVal File As String) As String
 
     Dim MyString, MyNumber
-    Open file For Input As #1 ' Open file for input.
+    Open File For Input As #1 ' Open file for input.
     fileContent = ""
     Do While Not EOF(1) ' Loop until end of file.
         Line Input #1, MyString
@@ -118,8 +118,8 @@ End Function
 '---------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Function readFileAndTruncate(ByVal file As String) As String
+Function readFileAndTruncate(ByVal File As String) As String
 
-    readFileAndTruncate = Left(readFile(file), 30000)
+    readFileAndTruncate = Left(readFile(File), 30000)
 
 End Function

@@ -1,4 +1,4 @@
-Attribute VB_Name = "FoldersFiles"
+Attribute VB_Name = "Folder"
 '---------------------------------------------------------------------------------------------------------------------------------------------
 '
 '   FoldersFiles Library v0.1
@@ -64,36 +64,54 @@ Sub ListFiles(ByVal strPath As String, ByVal cellDestination As Range)
 
     ' Local variables
     Dim counter As Integer
-    Dim file As String
+    Dim File As String
     ' Dim filesTab
     
     ' Add a trailing slash if needed
     strPath = checkFolder(strPath)
     
-    file = Dir$(strPath & Extention)
+    File = Dir$(strPath & Extention)
     
     ' Count the number of files in the folder
-    Do While Len(file)
-        file = Dir$
+    Do While Len(File)
+        File = Dir$
         counter = counter + 1
     Loop
     ReDim filesTab(counter - 1)
     counter = 0
 
     ' Reset the counter of the array
-    file = Dir$(strPath & Extention)
+    File = Dir$(strPath & Extention)
 
     ' List the files and display them in the cells
-    Do While Len(file) And counter <= UBound(filesTab)
-        cellDestination.Offset(counter, 0) = file
-        cellDestination.Offset(counter, 1) = strPath & file
-        file = Dir$
+    Do While Len(File) And counter <= UBound(filesTab)
+        cellDestination.Offset(counter, 0) = File
+        cellDestination.Offset(counter, 1) = strPath & File
+        File = Dir$
         counter = counter + 1
     Loop
     
 
 
 End Sub
+
+
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + checkFolder(ByVal strPath As String) As String
+'           * Description : check that the folder has a trailing slash and add one if needed
+'
+'           * Specifications / limitations
+'               - Should be nice to create the folder (and parent folders) if it does not exists
+'           * Arguments
+'               - strPath as String : the full path of the folder
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Function checkFolder(ByVal strPath As String) As String
@@ -104,72 +122,3 @@ Function checkFolder(ByVal strPath As String) As String
 
 End Function
 
-
-Sub moveSheetsInCurrentWorkbook(control As IRibbonControl)
-   Dim BkName As String
-   Dim NumSht As Integer
-   Dim BegSht As Integer
-   
-   Set wsCurrent = ActiveSheet
-
-    For Each cell In Selection
-        Workbooks.Open Filename:=cell.Offset(0, 1).Value
-        Set wk = Workbooks(cell.Value)
-        For Each ws In wk.Worksheets
-            If cell.Offset(0, -1).Value <> "" Then ws.Name = getSheetName(cell.Offset(0, -1).Text, ws, wk)
-            ws.Move after:=wsCurrent
-        Next
-      'Moves second sheet in source to front of designated workbook.
-      'Workbooks(cell.Value).Sheets(BegSht).Move _
-      '   Before:=Workbooks("Test.xls").Sheets(1)
-         'In each loop, the next sheet in line becomes indexed as number 2.
-      'Replace Test.xls with the full name of the target workbook you want.
-    Next
-End Sub
-
-Function getSheetName(ByVal pattern As String, ByVal ws As Worksheet, ByVal wk As Workbook)
-
-    'r = ActiveCell.Value
-    'Set ws = ActiveSheet
-    
-    sheetName = pattern
-    With CreateObject("vbscript.regexp")
-        .pattern = "\$(.+?)\$"
-        .Global = True
-        If .test(pattern) Then
-            For Each s In .Execute(pattern)
-                ' MsgBox (s)
-                cellAddress = Replace(s, "$", "")
-                sheetName = Replace(sheetName, s, ws.Range(cellAddress).Text)
-                ' r = Replace(r, s, Replace(s, ",", "#"))
-            Next 'extractBrackets = .Execute(r)(0)
-        End If
-    End With
-    sheetName = Replace(sheetName, "#wsName", ws.Name)
-    sheetName = Replace(sheetName, "#wkName", wk.Name)
-    If sheetName = pattern Then sheetName = pattern & " " & ws.Name
-    'MsgBox (r)
-    
-    
-    
-    getSheetName = Left(sheetName, 31)
-
-End Function
-
-Sub getReplacementPatterns(control As IRibbonControl)
-    
-    ActiveCell.Offset(0, 0) = "$A1$"
-    ActiveCell.Offset(0, 1) = "Value of cell A1 in worksheet"
-    
-    ActiveCell.Offset(1, 0) = "#wsName"
-    ActiveCell.Offset(1, 1) = "Name of the worksheet"
-    
-    ActiveCell.Offset(2, 0) = "#wkName"
-    ActiveCell.Offset(2, 1) = "Name of the workbook"
-    
-    ActiveCell.Offset(3, 0) = "The worksheet name will be automatically trimed to the first 31 characters"
-    ActiveCell.Offset(4, 0) = "If you don't use any pattern, the value will be used as a prefix for the new sheet name"
-    
-    
-
-End Sub

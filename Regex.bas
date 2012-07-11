@@ -72,7 +72,7 @@ Function matchExpreg(ByVal txt As String, ByVal matchPattern As String, ByVal re
     ' strData = cell.Value
      
     Dim reg_exp As New RegExp
-    reg_exp.Pattern = matchPattern
+    reg_exp.pattern = matchPattern
     reg_exp.IgnoreCase = True
     reg_exp.Global = True
     
@@ -107,7 +107,7 @@ Function findExpreg(ByVal txt As String, ByVal matchPattern As String) As String
 
      
     Dim expReg As New RegExp
-    expReg.Pattern = matchPattern
+    expReg.pattern = matchPattern
     expReg.IgnoreCase = True
     expReg.Global = True
     
