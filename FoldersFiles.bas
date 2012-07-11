@@ -1,50 +1,108 @@
 Attribute VB_Name = "FoldersFiles"
-Private Sub ListFiles(control As IRibbonControl)
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'
+'   FoldersFiles Library v0.1
+'
+'
+'   Functions lists
+'   ---------------
+'
+'       + Function writeFile (ByVal file As String, ByVal content As String) As String : overwrite the content specified in the file specified.
+'           * Specifications / limitations
+'               - If the file does not exists, the file is created
+'               - The folder has to exist
+'           * Arguments
+'               - file as String : the full path of the file
+'               - content as String : the content that has to be written into the file
+'
+'       + Function readFile(ByVal file As String) As String : read the content of a file and return a single line with all the content
+'           * Specifications / limitations
+'               - The file has to Exists, no error handling
+'               - The content is retrieved without any line returns (line returns are replaced by space)
+'           * Arguments
+'               - file as String : the full path of the file
+'       + Function readFileAndTruncate(ByVal file As String) As String : calls readFile() and then truncate the text to 30000 characters in order to avoid Excel limitations
+'           * Specifications / limitations
+'               - The file has to Exists, no error handling
+'               - The content is retrieved without any line returns (line returns are replaced by space)
+'               - Only the 30.000 first characters are retrieved
+'           * Arguments
+'               - file as String : the full path of the file
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      v0.1        Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
 
-strPath = ActiveCell.Value
 
-Dim counter As Integer
-'Leave Extention blank for all files
-   Dim file As String
-   If Right$(strPath, 1) <> "\" Then strPath = strPath & "\"
-    If Trim$(Extention) = "" Then
-        Extention = "*.*"
-    ElseIf Left$(Extention, 2) <> "*." Then
-        Extention = "*." & Extention
-    End If
+
+
+
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + ListFiles(ByVal strPath As String, ByVal cellDestination As Range)
+'           * Description : List the files in the folder specified in argument and display the list of the files in the cells
+'                           below the cell given in argument as well as the full path in the right column
+'
+'           * Specifications / limitations
+'               - Has to be launched by an other macro
+'           * Arguments
+'               - strPath as String : the full path of the folder
+'               - cellDestination as Range : the destination cell
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+Sub ListFiles(ByVal strPath As String, ByVal cellDestination As Range)
+
+    ' Local variables
+    Dim counter As Integer
+    Dim file As String
+    ' Dim filesTab
+    
+    ' Add a trailing slash if needed
+    strPath = checkFolder(strPath)
+    
     file = Dir$(strPath & Extention)
-
-
+    
+    ' Count the number of files in the folder
     Do While Len(file)
         file = Dir$
         counter = counter + 1
     Loop
-    ReDim listOfQuery(counter - 1)
+    ReDim filesTab(counter - 1)
     counter = 0
 
-
-    If Right$(strPath, 1) <> "\" Then strPath = strPath & "\"
-    If Trim$(Extention) = "" Then
-        Extention = "*.*"
-    ElseIf Left$(Extention, 2) <> "*." Then
-        Extention = "*." & Extention
-    End If
-
+    ' Reset the counter of the array
     file = Dir$(strPath & Extention)
 
-    ' listOfQuery(counter) = file
-    ' counter = counter + 1
-    Do While Len(file) And counter <= UBound(listOfQuery)
-        
-        ' listOfQuery(counter) = file
-        ActiveCell.Offset(counter + 1, 0) = file
-        ActiveCell.Offset(counter + 1, 1) = strPath & file
+    ' List the files and display them in the cells
+    Do While Len(file) And counter <= UBound(filesTab)
+        cellDestination.Offset(counter, 0) = file
+        cellDestination.Offset(counter, 1) = strPath & file
         file = Dir$
         counter = counter + 1
     Loop
+    
 
 
 End Sub
+
+
+Function checkFolder(ByVal strPath As String) As String
+    
+    ' Add a trailing slash if needed
+    If Right$(strPath, 1) <> "\" Then strPath = strPath & "\"
+    checkFolder = strPath
+
+End Function
 
 
 Sub moveSheetsInCurrentWorkbook(control As IRibbonControl)
