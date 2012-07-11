@@ -3,6 +3,9 @@ Attribute VB_Name = "Regex"
 '
 '   Regex Library v0.1
 '
+'   + References dependencies
+'       - Microsoft VBScript Regular Expressions 1.0
+'
 '
 '   Functions lists
 '   ---------------
