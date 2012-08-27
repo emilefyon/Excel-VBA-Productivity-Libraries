@@ -99,12 +99,14 @@ End Function
 '       Revisions history
 '       -----------------
 '           - Emile Fyon        11/07/2012      Creation
+'           - Emile Fyon        27/08/2012      Handle response in case the string is not found (return False)
 '
 '---------------------------------------------------------------------------------------------------------------------------------------------
 
 
 Function findExpreg(ByVal txt As String, ByVal matchPattern As String) As String
 
+    On Error GoTo errorHandler
      
     Dim expReg As New RegExp
     expReg.pattern = matchPattern
@@ -115,7 +117,9 @@ Function findExpreg(ByVal txt As String, ByVal matchPattern As String) As String
     
     txt = res(0).submatches(0)
     findExpreg = txt
-
+    Exit Function
+errorHandler:
+    findExpreg = False
      
 End Function
 
