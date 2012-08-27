@@ -1,5 +1,26 @@
-Attribute VB_Name = "Worksheet"
+Attribute VB_Name = "LIB_Worksheet"
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + Function getCurrentWorkbookPath() As String
+'           * Description : Return the path of the current workbook
+'           * Specifications / limitations
+'               - None
+'           * Arguments
+'               - None
+'
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
 
+Function getSheetName(ByVal cell As Range)
+    
+    getSheetName = cell.Worksheet.Name
+
+End Function
 
 Sub extractPivot()
     
@@ -30,7 +51,7 @@ Sub extractPivot()
         Set extractStart = wsExtract.Range(wsExtract.Range("A1").Value)
     End If
     
-    Set extractCh = wsExtract.Cells(extractStart.Row, 2)
+    Set extractCh = wsExtract.cells(extractStart.Row, 2)
     
     
     ' piv.DataLabelRange

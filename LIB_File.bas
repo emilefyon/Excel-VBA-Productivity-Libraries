@@ -1,4 +1,4 @@
-Attribute VB_Name = "File"
+Attribute VB_Name = "LIB_File"
 '---------------------------------------------------------------------------------------------------------------------------------------------
 '
 '   File Library v0.1
@@ -74,6 +74,7 @@ End Function
 '               - The content is retrieved without any line returns (line returns are replaced by space)
 '           * Arguments
 '               - file as String : the full path of the file
+'               - Optional createFile as Boolean : indicates if we have to create the file if it does not exists (default False)
 '
 '
 '       Last edition date : 11/07/2012
@@ -81,11 +82,23 @@ End Function
 '       Revisions history
 '       -----------------
 '           - Emile Fyon        11/07/2012      Creation
+'           - Emile Fyon        12/07/2012      Added functionality in order to create the file if it does not exists
 '
 '---------------------------------------------------------------------------------------------------------------------------------------------
 
-Function readFile(ByVal File As String) As String
-
+Function readFile(ByVal File As String, Optional createFile As Boolean) As String
+    
+    If (IsMissing(createFile)) Then createFile = False
+    
+    If (fileExists(File) = False) Then
+        If (createFile = True) Then
+            temp = writeFile(File, "")
+        Else
+            readFile = "Error : File does not exists"
+            Exit Function
+        End If
+    End If
+    
     Dim MyString, MyNumber
     Open File For Input As #1 ' Open file for input.
     fileContent = ""
@@ -97,7 +110,6 @@ Function readFile(ByVal File As String) As String
     Close #1 ' Close file.
     readFile = fileContent
 End Function
-
 
 '---------------------------------------------------------------------------------------------------------------------------------------------
 '       + readFileAndTruncate(ByVal file As String) As String : calls readFile() and then truncate the text to 30000 characters in order to avoid Excel limitations
@@ -118,8 +130,44 @@ End Function
 '---------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Function readFileAndTruncate(ByVal File As String) As String
+Function readFileAndTruncate(ByVal File As String, Optional createFile As Boolean) As String
 
-    readFileAndTruncate = Left(readFile(File), 30000)
+        If (IsMissing(createFile)) Then createFile = False
+    readFileAndTruncate = Left(readFile(File, createFile), 30000)
 
 End Function
+
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + readFileAndTruncate(ByVal file As String) As String :
+'           * Description : It is used to validate file path/link from a string variable. Return True if the file exist.
+'           * Specifications / limitations
+'               - The file has to Exists, no error handling
+'               - The content is retrieved without any line returns (line returns are replaced by space)
+'               - Only the 30.000 first characters are retrieved
+'           * Arguments
+'               - strFileFullPath As String : Full path to the file input file including the file name and the file extension.
+'           * Output
+'
+'
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Georgiev Velin    20/12/2011      Creation    velin.georgiev@gmail.com
+'           - Emile Fyon        11/07/2012      Creation    emilefyon@gmail.com
+'
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
+
+Function fileExists(strFileFullPath As String) As Boolean
+
+
+    Dim objFSO As Object
+    Set objFSO = CreateObject("Scripting.FileSystemObject")
+    If objFSO.fileExists(strFileFullPath) Then fileExists = True
+    Set objFSO = Nothing
+
+
+End Function
+

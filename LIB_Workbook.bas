@@ -1,7 +1,57 @@
-Attribute VB_Name = "Workbook"
+Attribute VB_Name = "LIB_Workbook"
+
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'
+'   Regex Library v0.1
+'
+'   + References dependencies
+'       - Microsoft VBScript Regular Expressions 1.0
+'
+'
+'   Functions lists
+'   ---------------
+'
+'
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      v0.1        Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
 
 
-Sub moveSheetsInCurrentWorkbook(control As IRibbonControl)
+
+
+
+
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + Function getCurrentWorkbookPath() As String
+'           * Description : Return the path of the current workbook
+'           * Specifications / limitations
+'               - None
+'           * Arguments
+'               - None
+'
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
+
+Function getCurrentWorkbookPath()
+    
+    getCurrentWorkbookPath = checkFolder(ActiveWorkbook.Path)
+
+End Function
+
+
+
+
+
+Sub moveSheetsInCurrentWorkbook()
    Dim BkName As String
    Dim NumSht As Integer
    Dim BegSht As Integer
@@ -12,7 +62,7 @@ Sub moveSheetsInCurrentWorkbook(control As IRibbonControl)
         Workbooks.Open filename:=cell.Offset(0, 1).Value
         Set wk = Workbooks(cell.Value)
         For Each ws In wk.Worksheets
-            If cell.Offset(0, -1).Value <> "" Then ws.Name = getSheetName(cell.Offset(0, -1).Text, ws, wk)
+            If cell.Offset(0, -1).Value <> "" Then ws.Name = getSheetName(cell.Offset(0, -1).text, ws, wk)
             ws.Move After:=wsCurrent
         Next
       'Moves second sheet in source to front of designated workbook.
@@ -24,7 +74,7 @@ Sub moveSheetsInCurrentWorkbook(control As IRibbonControl)
 End Sub
 
 
-Function getSheetName(ByVal pattern As String, ByVal ws As Worksheet, ByVal wk As Workbook)
+Function getSheetNameRedo(ByVal pattern As String, ByVal ws As Worksheet, ByVal wk As Workbook) As String
 
     'r = ActiveCell.Value
     'Set ws = ActiveSheet
@@ -37,7 +87,7 @@ Function getSheetName(ByVal pattern As String, ByVal ws As Worksheet, ByVal wk A
             For Each s In .Execute(pattern)
                 ' MsgBox (s)
                 cellAddress = Replace(s, "$", "")
-                sheetName = Replace(sheetName, s, ws.Range(cellAddress).Text)
+                sheetName = Replace(sheetName, s, ws.Range(cellAddress).text)
                 ' r = Replace(r, s, Replace(s, ",", "#"))
             Next 'extractBrackets = .Execute(r)(0)
         End If
@@ -56,7 +106,7 @@ End Function
 
 
 
-Sub getReplacementPatterns(control As IRibbonControl)
+Sub getReplacementPatterns()
     
     ActiveCell.Offset(0, 0) = "$A1$"
     ActiveCell.Offset(0, 1) = "Value of cell A1 in worksheet"
@@ -75,7 +125,7 @@ Sub getReplacementPatterns(control As IRibbonControl)
 End Sub
 
 
-Sub listSheets(control As IRibbonControl)
+Sub listSheets()
     
     i = 0
     For Each ws In ActiveWorkbook.Sheets
@@ -85,7 +135,7 @@ Sub listSheets(control As IRibbonControl)
 
 End Sub
 
-Sub copySheets(control As IRibbonControl)
+Sub copySheets()
     
     Set ws = ActiveSheet
     For Each cell In Selection
@@ -97,7 +147,7 @@ End Sub
 
 
 
-Sub renameSheets(control As IRibbonControl)
+Sub renameSheets()
     
     For Each cell In Selection
         Sheets(cell.Value).Name = cell.Offset(0, 1).Value
@@ -105,12 +155,12 @@ Sub renameSheets(control As IRibbonControl)
 
 End Sub
 
-Sub concatenateSheets(control As IRibbonControl)
+Sub concatenateSheets()
     
     Set cell = ActiveCell
     
     Set wsExtract = Sheets(cell.Value)
-    wsExtract.Cells.ClearContents
+    wsExtract.cells.ClearContents
     
     For Each cell In Range(cell.Offset(1, 0), cell.End(xlDown))
         If wsExtract.Range("A1").Value = "" Then

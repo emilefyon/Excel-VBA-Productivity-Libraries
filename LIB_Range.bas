@@ -1,4 +1,4 @@
-Attribute VB_Name = "RangeActions"
+Attribute VB_Name = "LIB_Range"
 
 
 '---------------------------------------------------------------------------------------------------------------------------------------------
@@ -75,5 +75,44 @@ Sub addLink(ByVal url As String, ByVal cell As Range)
 
 
 End Sub
+
+
+
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + Sub addLink (ByVal url As String, ByVal cell As Range) : add an hyperlink to cell given in argument to the URL given in argument. The URL will be the content of the cell
+'           * Specifications / limitations
+'               - None
+'           * Arguments
+'               - ByVal url As String the URL the cell must point to
+'               - ByVal cell As Range the cell to add the link
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
+
+Function getAddress(ByVal cell As Range)
+    
+    getAddress = cell.Address
+
+End Function
+
+
+
+'------------------------------------------------------
+
+
+Function selectXlDownRange(ByVal cell As Range) As Range
+
+    If cell.Offset(1, 0) = "" Then
+        Set selectXlDownRange = cell
+        Exit Function
+    End If
+    Set selectXlDownRange = Range(cell, cell.End(xlDown))
+    
+End Function
 
 

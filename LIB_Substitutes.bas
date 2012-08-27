@@ -1,4 +1,4 @@
-Attribute VB_Name = "Substitutes"
+Attribute VB_Name = "LIB_Substitutes"
 
 
 
@@ -29,4 +29,5 @@ Function SuperSubH(strOldText As String, ByVal Rng1 As Range, ByVal rng2 As Rang
     Next cel
     SuperSubH = strOldText
 End Function
+
 
