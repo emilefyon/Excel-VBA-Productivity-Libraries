@@ -1,25 +1,34 @@
 Attribute VB_Name = "LIB_Workbook"
-
 '---------------------------------------------------------------------------------------------------------------------------------------------
 '
-'   Regex Library v0.1
+'   Workbook Library v0.1
 '
-'   + References dependencies
-'       - Microsoft VBScript Regular Expressions 1.0
+'
+'   Dependencies
+'   ------------
+'
+'       + LIB_Worksheet
+'       + LIB_Regex
+'
+'
 '
 '
 '   Functions lists
 '   ---------------
 '
-'
+'       + Function writeFile (ByVal file As String, ByVal content As String) As String : overwrite the content specified in the file specified.
+'           * Specifications / limitations
+'               - If the file does not exists, the file is created
+'               - The folder has to exist
+'           * Arguments
+'               - file as String : the full path of the file
+'               - content as String : the content that has to be written into the file
 '
 '       Revisions history
 '       -----------------
 '           - Emile Fyon        11/07/2012      v0.1        Creation
 '
 '---------------------------------------------------------------------------------------------------------------------------------------------
-
-
 
 
 
@@ -49,30 +58,67 @@ End Function
 
 
 
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + Function moveSheetsInCurrentWorkbook() As String
+'           * Description : Return the path of the current workbook
+'           * Specifications / limitations
+'               - None
+'           * Arguments
+'               - None
+'
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
+
+Sub test()
+    
+    Call moveSheetsInCurrentWorkbook(ActiveCell.Value)
+
+End Sub
 
 
-Sub moveSheetsInCurrentWorkbook()
-   Dim BkName As String
-   Dim NumSht As Integer
-   Dim BegSht As Integer
+Sub moveSheetsInCurrentWorkbook(ByVal wkFullPath As String, Optional ByVal namePattern As String)
+    Dim wkFileName As String
+    Dim wsCurrent As Worksheet
+    Dim wk As Workbook
+    Dim BkName As String
+    Dim NumSht As Integer
+    Dim BegSht As Integer
+    
+    wkFileName = fileNameFromFullPath(wkFullPath)
+
+    Set wsCurrent = ActiveSheet
    
-   Set wsCurrent = ActiveSheet
-
-    For Each cell In Selection
-        Workbooks.Open filename:=cell.Offset(0, 1).Value
-        Set wk = Workbooks(cell.Value)
-        For Each ws In wk.Worksheets
-            If cell.Offset(0, -1).Value <> "" Then ws.Name = getSheetName(cell.Offset(0, -1).text, ws, wk)
-            ws.Move After:=wsCurrent
-        Next
+    Workbooks.Open Filename:=wkFullPath
+    Set wk = Workbooks(wkFileName)
+    
+    For Each ws In wk.Worksheets
+        If IsMissing(namePattern) = False Then
+            ws.Name = Replace(ws.Name, "#wsName", ws.Name)
+            ws.Name = Replace(ws.Name, "#wkName", wk.Name)
+        End If
+        ws.Move After:=wsCurrent
+    Next
+    
+    wsCurrent.Select
       'Moves second sheet in source to front of designated workbook.
       'Workbooks(cell.Value).Sheets(BegSht).Move _
       '   Before:=Workbooks("Test.xls").Sheets(1)
          'In each loop, the next sheet in line becomes indexed as number 2.
       'Replace Test.xls with the full name of the target workbook you want.
-    Next
 End Sub
 
+
+
+
+
+
+'
 
 Function getSheetNameRedo(ByVal pattern As String, ByVal ws As Worksheet, ByVal wk As Workbook) As String
 
@@ -127,9 +173,15 @@ End Sub
 
 Sub listSheets()
     
+    Dim rg As Range
+    
+    Do
+        Set rg = Application.InputBox(Prompt:="Where do you want to copy the list of sheets ?", Title:="Choose a range", Type:=8)
+    Loop While rg Is Nothing
+    
     i = 0
     For Each ws In ActiveWorkbook.Sheets
-        ActiveCell.Offset(i, 0).Value = ws.Name
+        rg.Offset(i, 0).Value = ws.Name
         i = i + 1
     Next
 
