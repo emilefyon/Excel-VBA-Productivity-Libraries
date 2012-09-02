@@ -1,4 +1,4 @@
-Attribute VB_Name = "Regex"
+Attribute VB_Name = "LIB_Regex"
 '---------------------------------------------------------------------------------------------------------------------------------------------
 '
 '   Regex Library v0.1
@@ -145,6 +145,32 @@ Function stripTags(ByVal txt As String) As String
 
     regMask = "(<.+?>)"
     stripTags = matchExpreg(txt, regMask, "")
+    
+
+End Function
+
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + Function fileNameFromFullPath(ByVal txt As String) As String
+'           * Description : Extract the filename of a file from his full path
+'           * Specifications / limitations
+'               - None
+'           * Arguments
+'               - ByVal txt As String : the text to search in
+'
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      Creation
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Function fileNameFromFullPath(ByVal txt As String) As String
+
+    regMask = ".+\\(.+)"
+    fileNameFromFullPath = findExpreg(txt, regMask)
     
 
 End Function
