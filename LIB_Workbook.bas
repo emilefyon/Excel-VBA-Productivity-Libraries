@@ -59,12 +59,15 @@ End Function
 
 
 '---------------------------------------------------------------------------------------------------------------------------------------------
-'       + Function moveSheetsInCurrentWorkbook() As String
+'       + Function moveSheetsInCurrentWorkbook(ByVal wkFullPath As String, Optional ByVal namePattern As String) As String
 '           * Description : Return the path of the current workbook
 '           * Specifications / limitations
 '               - None
 '           * Arguments
-'               - None
+'               - wkFullPath : the fullPath of the workbook to import the worksheets from
+'               - namePattern : a custom name Pattern
+'                   #wkName will be replaced is with the name of the destination workbook
+'                   #wsName will be the current name of the worksheet
 '
 '
 '       Last edition date : 11/07/2012
@@ -72,15 +75,9 @@ End Function
 '       Revisions history
 '       -----------------
 '           - Emile Fyon        11/07/2012      Creation
+'           - Emile Fyon        02/09/2012      Revision in order to make the function ActiveCell-free
 '
 '---------------------------------------------------------------------------------------------------------------------------------------------
-
-Sub test()
-    
-    Call moveSheetsInCurrentWorkbook(ActiveCell.Value)
-
-End Sub
-
 
 Sub moveSheetsInCurrentWorkbook(ByVal wkFullPath As String, Optional ByVal namePattern As String)
     Dim wkFileName As String
@@ -170,14 +167,37 @@ Sub getReplacementPatterns()
 
 End Sub
 
+'---------------------------------------------------------------------------------------------------------------------------------------------
+'       + Function listSheets() As String
+'           * Description : Write the name of the worksheets of the current workbook in a destination cell
+'           * Specifications / limitations
+'               - None
+'           * Arguments
+'               - wkFullPath : the fullPath of the workbook to import the worksheets from
+'               - namePattern : a custom name Pattern
+'                   #wkName will be replaced is with the name of the destination workbook
+'                   #wsName will be the current name of the worksheet
+'
+'
+'       Last edition date : 11/07/2012
+'
+'       Revisions history
+'       -----------------
+'           - Emile Fyon        11/07/2012      Creation
+'           - Emile Fyon        02/09/2012      Revision in order to make the function ActiveCell-free
+'
+'---------------------------------------------------------------------------------------------------------------------------------------------
 
-Sub listSheets()
+
+Sub listSheets(Optional ByVal destRg As Range)
     
     Dim rg As Range
     
-    Do
-        Set rg = Application.InputBox(Prompt:="Where do you want to copy the list of sheets ?", Title:="Choose a range", Type:=8)
-    Loop While rg Is Nothing
+    If IsMissing(destRg) Then
+        Do
+            Set rg = Application.InputBox(Prompt:="Where do you want to copy the list of sheets ?", Title:="Choose a range", Type:=8)
+        Loop While rg Is Nothing
+    End If
     
     i = 0
     For Each ws In ActiveWorkbook.Sheets

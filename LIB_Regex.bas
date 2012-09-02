@@ -158,11 +158,11 @@ End Function
 '               - ByVal txt As String : the text to search in
 '
 '
-'       Last edition date : 11/07/2012
+'       Last edition date : 02/09/2012
 '
 '       Revisions history
 '       -----------------
-'           - Emile Fyon        11/07/2012      Creation
+'           - Emile Fyon        02/09/2012      Creation
 '
 '---------------------------------------------------------------------------------------------------------------------------------------------
 
