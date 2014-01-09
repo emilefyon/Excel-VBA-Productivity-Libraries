@@ -1,7 +1,4 @@
 Attribute VB_Name = "excelStats"
-
-' Add Microsoft Excel 14.0 Object Library Reference
-
 Sub ExportStatsToExcel()
     ' On Error GoTo ErrHandler
     
@@ -44,9 +41,10 @@ Sub ExportStatsToExcel()
     'Open and activate Excel workbook.
     Set appExcel = CreateObject("Excel.Application")
     Set wkb = appExcel.Workbooks.Add
+    appExcel.Calculation = xlCalculationManual
     Set wks = wkb.Sheets(1)
     wks.Activate
-    appExcel.Application.Visible = True
+    ' appExcel.Application.Visible = True
     
     ' Copy headers
     wks.Cells(1, 1).Value = "Folder"
@@ -79,8 +77,9 @@ Sub ExportStatsToExcel()
         Next
     End If
     
-    MsgBox ("Import done")
+    MsgBox ("Export done")
     appExcel.Application.Visible = True
+    appExcel.Calculation = xlCalculationAutomatic
 
     Set appExcel = Nothing
     Set wkb = Nothing
@@ -131,14 +130,18 @@ Private Sub processFolder(ByVal oParent As Outlook.MAPIFolder, ByVal wks As Work
         For Each itm In oParent.Items
             intColumnCounter = 1
             
-            wks.Cells(intRowCounter, 1).Value = oParent.Name
-            wks.Cells(intRowCounter, 2).Value = itm.SenderName
-            wks.Cells(intRowCounter, 3).Value = itm.Subject
-            wks.Cells(intRowCounter, 4).Value = itm.SentOn
-            wks.Cells(intRowCounter, 5).Value = itm.ReceivedTime
-            wks.Cells(intRowCounter, 6).Value = itm.Size / 1024
+            Debug.Print TypeName(itm)
+            If (TypeName(itm) = "MailItem") Then
             
-            intRowCounter = intRowCounter + 1
+                wks.Cells(intRowCounter, 1).Value = oParent.Name
+                wks.Cells(intRowCounter, 2).Value = itm.SenderName
+                wks.Cells(intRowCounter, 3).Value = itm.Subject
+                wks.Cells(intRowCounter, 4).Value = itm.SentOn
+                wks.Cells(intRowCounter, 5).Value = itm.ReceivedTime
+                wks.Cells(intRowCounter, 6).Value = itm.Size / 1024
+                
+                intRowCounter = intRowCounter + 1
+            End If
         Next itm
 
 
