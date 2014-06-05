@@ -48,6 +48,10 @@ Function implode(ByVal cellRange As Range, ByVal delimiter As String, Optional i
     
     If IsMissing(ignoreBlank) Then ignoreBlank = False
     
+    If delimiter = "\n" Then
+        delimiter = vbCrLf
+    End If
+    
     newText = ""
     For Each c In cellRange
         If c.Value = "" And ignoreBlank = True Then
@@ -70,7 +74,7 @@ Function protectForSQL(text As String, Optional ByVal isNumber As Boolean) As St
     If IsMissing(isNumber) Then isNumber = False
     
     
-    text = Replace(text, "€", "&euro;")
+    text = Replace(text, "â‚¬", "&euro;")
     text = Replace(text, "'", "''")
     
     If isNumber Then text = Replace(text, ",", ".")
@@ -90,3 +94,11 @@ Function deleteCharReturns(ByVal txt As String) As String
 
 End Function
 
+Function ScrubFileName(stringToScrub As String) As String
+' remove illegal characters from filenames
+Dim newString As String
+ 
+  newString = Replace(Replace(Replace(Replace(Replace(Replace(Replace(Replace(Replace(stringToScrub, "|", ""), ">", ""), "<", ""), Chr(34), ""), "?", ""), "*", ""), ":", ""), "/", ""), "\", "")
+ 
+  ScrubFileName = newString
+End Function
