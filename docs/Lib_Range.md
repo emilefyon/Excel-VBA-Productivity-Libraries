@@ -30,7 +30,7 @@ For VBA users: returns the cell.end(xlDown) related range.
 
 #### Specifications / limitations
 * No Performance tests have been perfomed
-* Will end after before the first empty cell
+* Will end before the first empty cell
 * If the next cell is empty, the function will return only the specified cell
 * Can not be used in Name Manager
 
