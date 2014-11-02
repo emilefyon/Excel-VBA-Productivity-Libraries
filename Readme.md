@@ -28,3 +28,4 @@ In order to work with a library in your Excel workbook, simply drag-and-drop you
 *The documentation is in construction, not all the files are documented here*
 
 * [LIB_File](docs/Lib_File.md): Library to handle file writing and reading
+* [LIB_Range](docs/Lib_Range.md): Library to provide additional manipulations on Ranges
