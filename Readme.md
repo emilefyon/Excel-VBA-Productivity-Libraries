@@ -26,3 +26,5 @@ In order to work with a library in your Excel workbook, simply drag-and-drop you
 ## Documentation
 
 *The documentation is in construction, not all the files are documented here*
+
+* [LIB_File](docs/Lib_File.md): Library to handle file writing and reading
