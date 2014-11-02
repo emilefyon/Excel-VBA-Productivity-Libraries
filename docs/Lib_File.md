@@ -7,6 +7,7 @@
 * [writeFile](#writefile-file-content)
 * [readFile](#readfile-file)
 * [readfileAndTruncate](#readfileandtruncate-file)
+* [fileExists](#fileexists-file)
 
 ### writeFile (file, content)
 
@@ -49,3 +50,20 @@ calls readFile() and then truncate the text to 30000 characters in order to avoi
 * The file has to Exists, no error handling
 * The content is retrieved without any line returns (line returns are replaced by space)
 * Only the 30.000 first characters are retrieved
+
+### fileExists (file)
+
+Check if the specified file exists. Return a boolean value.
+
+#### Arguments
+* file as String : the full path of the file
+
+
+#### Specifications / limitations
+* none
+
+
+
+
+
+
