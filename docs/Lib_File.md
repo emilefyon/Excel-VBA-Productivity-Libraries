@@ -4,9 +4,7 @@
 
 ## Function lists
 
-* [writeFile][1]
-
-### [1]writeFile (file, content)
+### writeFile (file, content)
 
 Overwrite the file specified with the content specified
 
@@ -47,6 +45,3 @@ calls readFile() and then truncate the text to 30000 characters in order to avoi
 * The file has to Exists, no error handling
 * The content is retrieved without any line returns (line returns are replaced by space)
 * Only the 30.000 first characters are retrieved
-* [writeFil]
-
-[e][1] 
