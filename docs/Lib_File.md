@@ -4,6 +4,10 @@
 
 ## Function lists
 
+* [writeFile](#writefile-file-content)
+* [readFile](#readfile-file)
+* [readfileAndTruncate](#readfileandtruncate-file)
+
 ### writeFile (file, content)
 
 Overwrite the file specified with the content specified
