@@ -8,6 +8,7 @@
 * [readFile](#readfile-file)
 * [readfileAndTruncate](#readfileandtruncate-file)
 * [fileExists](#fileexists-file)
+* [getFileUpdateTime](#getfileupdatetime-file)
 
 ### writeFile (file, content)
 
@@ -60,7 +61,16 @@ Check if the specified file exists. Return a boolean value.
 #### Specifications / limitations
 * none
 
+### getFileUpdateTime (file)
 
+Return the last update time or creation time of the specified file.
+
+#### Arguments
+* **file** as String : the full path of the file
+
+
+#### Specifications / limitations
+* No error handling, the file has to exist
 
 
 
