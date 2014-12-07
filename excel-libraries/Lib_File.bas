@@ -57,8 +57,9 @@ Function fileExists(file As String) As Boolean
 
 End Function
 
-Function getFileUpdateTime(ByVal fullPath As String)
+Function getFileUpdateTime(ByVal file As String) As String
     
-    getFileUpdateTime = FileDateTime(fullPath)
+    getFileUpdateTime = FileDateTime(file)
 
 End Function
+
