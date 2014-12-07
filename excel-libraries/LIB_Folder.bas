@@ -86,6 +86,7 @@ Sub ListFiles(ByVal strPath As String, ByVal cellDestination As Range)
         File = Dir$
         counter = counter + 1
     Loop
+    If (counter = 0) Then Exit Sub
     ReDim filesTab(counter - 1)
     counter = 0
 
