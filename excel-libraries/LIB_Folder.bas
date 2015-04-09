@@ -176,6 +176,28 @@ Sub ListFolder(sFolderPath As String, ByVal cellDestination As Range)
      
 End Sub
 
+Function getOldestFileInDir(ByVal path As String, ByVal fileNameMask As String) As Date
+  
+  Dim FileName As String, FileDir As String, FileSearch As String
+  Dim MaxDate As Date, interDate As Date, dteFile As Date
+  
+  MaxDate = DateSerial(1900, 1, 1)
+  FileDir = path
+  FileName = fileNameMask
+  FileSearch = Dir(FileDir & FileName)
+  
+  While Len(FileSearch) > 0
+    dteFile = FileDateTime(FileDir & FileSearch)
+    If dteFile > MaxDate Then
+      MaxDate = dteFile
+    End If
+    FileSearch = Dir()
+  Wend
+  
+  getOldestFileInDir = MaxDate
+
+End Function
+
 '-----------------------------------------------
 
 
